@@ -3,10 +3,20 @@
 
 {% block content %}
 <h1>{{ post.title }}</h1>
-<small>By: {{ post.author.first_name }}{{ post.author.last_name }} </small> <br/>
+<small>By: 
+  {{ post.author.first_name }} -
+  {{ post.author.last_name }} - 
+  {{ post.post_date }}
+
+  
+{% if user.is_authenticated %}  
+  <a href="{% url 'update_post' post.pk %}">Edit</a> </small> 
+  <a href="{% url 'delete_post' post.pk %}">Delete</a> 
+{% endif %}
+  <br/>
 <hr>
 <br/>
-{{ post.body }}
+{{ post.body|safe }}
 
 
 <br/><br/>
