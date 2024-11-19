@@ -2,24 +2,119 @@
 {% block title %} {{ post.title }} {% endblock %}
 
 {% block content %}
-<h1>{{ post.title }}</h1>
-<small>By: 
-  {{ post.author.first_name }} -
-  {{ post.author.last_name }} - 
-  {{ post.post_date }}
+<!-- Add the CSS directly to the HTML -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const iframe = document.querySelector('iframe');
+    iframe.addEventListener('mouseenter', function () {
+      iframe.contentWindow.focus(); // Focus when the mouse enters the iframe
+    });
+    iframe.addEventListener('click', function () {
+      iframe.contentWindow.focus(); // Focus when the iframe is clicked
+    });
+  });
+</script>
 
-  
-{% if user.is_authenticated %}  
-  <a href="{% url 'update_post' post.pk %}">Edit</a> </small> 
-  <a href="{% url 'delete_post' post.pk %}">Delete</a> 
-{% endif %}
-  <br/>
-<hr>
+
+
+<style>
+  /* Reset CSS for Parent Containers */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+
+  #content, .container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Full-width Flexbox Layout */
+  .flex-container {
+    display: flex;
+    flex-direction: row; /* Side-by-side layout */
+    width: 100%; /* Use full width of the viewport */
+    height: calc(100vh - 150px); /* Use full height minus header/footer */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent container overflow */
+  }
+
+  /* Left Section: Post Body */
+  .flex-container .left {
+    flex: 1; /* Take up exactly 50% of the width */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    padding: 20px; /* Add padding for readability */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    background-color: #f9f9f9; /* Optional: Light background */
+  }
+
+  /* Right Section: noVNC Window */
+  .flex-container .right {
+    flex: 1; /* Take up exactly 50% of the width */
+    height: 100%; /* Match the height of the container */
+    overflow: hidden; /* Hide overflow content */
+    box-sizing: border-box; /* Consistent padding behavior */
+    background-color: #fff; /* Optional: Background color */
+  }
+  .flex-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove iframe borders */
+  }
+
+  /* Responsive Design for Smaller Screens */
+  @media (max-width: 768px) {
+    .flex-container {
+      flex-direction: column; /* Stack sections vertically */
+      height: auto; /* Allow natural height */
+    }
+    .flex-container .left, .flex-container .right {
+      flex: none;
+      width: 100%; /* Full width on small screens */
+    }
+  }
+</style>
+
+
+<!-- Flexbox Layout -->
+<div class="flex-container">
+ 
+  <!-- Left: Post Content -->
+  <div class="left">
+    <div>
+      <h1>{{ post.title }}</h1>
+      <small>By: 
+        {{ post.author.first_name }} -
+        {{ post.author.last_name }} - 
+        {{ post.post_date }}
+        
+      {% if user.is_authenticated %}  
+        <a href="{% url 'update_post' post.pk %}">Edit</a> 
+        <a href="{% url 'delete_post' post.pk %}">Delete</a> 
+      {% endif %}
+      </small>
+      <hr>
+      </div>
+    {{ post.body|safe }}
+  </div>
+
+  <!-- Right: noVNC Window -->
+  <div class="right">
+    <iframe 
+      src="http://192.168.41.129:6080/vnc.html?&autoconnect=true" 
+       allow="keyboard"
+      title="noVNC Window">
+    </iframe>
+  </div>
+</div>
+
 <br/>
-{{ post.body|safe }}
-
-
-<br/><br/>
 <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 
 {% endblock %}

@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'theblog',
     'members',
+    'froala_editor',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,8 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'ablog.urls'
 
 TEMPLATES = [
@@ -123,6 +126,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+FROALA_EDITOR_OPTIONS = {
+    'toolbarInline': False,
+    'height': 300,
+    'width': '100%',
+     'pluginsEnabled': [
+        'video', 'link'
+    ],
+    'videoInsertButtons': ['videoBack', '|', 'videoByURL'],  # Allow inserting by URL
+    'imageUpload': True,
+    'fileUpload': True,
+    'imageUploadURL': '/froala_editor/filebrowser/upload/',  # Endpoint upload ảnh
+}
 
 
 LOGIN_REDIRECT_URL = 'home'
