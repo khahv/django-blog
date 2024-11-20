@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, Category
+from .models import Post, Category, MachineTemplate
 from .forms import PostForm
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
+import json, logging
+
 # Create your views here.
 # def home(request):
 #   return render(request, 'home.html', {})
+logger = logging.getLogger('myapp')
 
 class HomeView(ListView):
   model = Post
@@ -27,6 +32,11 @@ class AddCategoryView(CreateView):
   # form_class = PostForm
   template_name = 'add_category.html'
   fields = '__all__'
+class AddMachineTemplateView(CreateView): 
+  model = MachineTemplate
+  # form_class = PostForm
+  template_name = 'add_machine_template.html'
+  fields = '__all__'
 
 class UpdatePostView(UpdateView):
   model = Post
@@ -37,3 +47,27 @@ class DeletePostView(DeleteView):
   model = Post
   template_name = "delete_post.html"
   success_url = reverse_lazy('home')
+
+
+@csrf_protect  # Allow POST requests without CSRF token for testing (use CSRF token in production)
+def button_action(request):
+  if request.method == 'POST':
+    try:
+      # Parse the JSON payload
+      data = json.loads(request.body)
+      button_id = data.get('button_id')
+      # Check if the button_id matches the special value
+      if button_id == 'special-button-id':
+          # Perform the backend action
+          # Example: Update a database entry or send a notification
+          logger.debug("This is a debug message")
+          logger.info("This is an info message")
+          logger.warning("This is a warning message")
+          logger.error("This is an error message")
+          logger.critical("This is a critical message")
+          return JsonResponse({'success': True, 'message': 'AAASpecial action performed!'})
+      else:
+          return JsonResponse({'success': False, 'message': 'Invalid button ID'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+  return JsonResponse({'success': False, 'message': 'Invalid request method'})

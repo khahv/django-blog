@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -128,18 +128,66 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FROALA_EDITOR_OPTIONS = {
-    'toolbarInline': False,
-    'height': 300,
+    'toolbarButtons': [
+        'fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
+        'fontFamily', 'fontSize', 'color', 'inlineStyle', 'paragraphStyle', '|',
+        'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', '|',
+        'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
+        'print', 'help', 'html', '|', 'undo', 'redo'
+    ],
+     'htmlAllowedAttrs': ['class', 'id', 'style', 'onclick', 'href', 'target'], 
+    'height': 800,
     'width': '100%',
      'pluginsEnabled': [
-        'video', 'link'
+        'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'embedly',
+        'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager',
+        'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle',
+        'print', 'quickInsert', 'quote', 'save', 'specialCharacters', 'table', 'url', 'video', 'wordPaste'
     ],
     'videoInsertButtons': ['videoBack', '|', 'videoByURL'],  # Allow inserting by URL
     'imageUpload': True,
     'fileUpload': True,
     'imageUploadURL': '/froala_editor/filebrowser/upload/',  # Endpoint upload ảnh
 }
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'myapp': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'

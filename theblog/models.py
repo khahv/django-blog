@@ -12,6 +12,13 @@ class Category(models.Model):
     return self.name
   def get_absolute_url(self):
     return reverse('home')
+  
+class MachineTemplate(models.Model):
+  name = models.CharField(max_length=255)
+  def __str__(self):
+    return self.name
+  def get_absolute_url(self):
+    return reverse('home')
 
 class Post(models.Model):
   title = models.CharField(max_length=255)
@@ -22,9 +29,10 @@ class Post(models.Model):
   post_date = models.DateField(auto_now_add=True)
   # category = models.CharField(max_length=255, default='coding')
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
+  machines = models.ManyToManyField(MachineTemplate, blank=True) 
+  
   def __str__(self):
-    return self.title + '|' + str(self.author.password)
+    return self.title + '|' + str(self.author)
   def get_absolute_url(self):
     return reverse('article-detail', args=(str(self.id)))
 

@@ -3,6 +3,21 @@
 {% block content %}
 
 {% if user.is_authenticated %}  
+
+{% load static %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#id_categories').select2({
+      placeholder: 'Select categories',
+      allowClear: true,
+      width: '100%',
+    });
+  });
+</script>
+
 <h1>Update Post...</h1>
 <br/>
 <div class="form-group">

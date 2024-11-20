@@ -4,16 +4,52 @@
 {% block content %}
 <!-- Add the CSS directly to the HTML -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const iframe = document.querySelector('iframe');
-    iframe.addEventListener('mouseenter', function () {
-      iframe.contentWindow.focus(); // Focus when the mouse enters the iframe
-    });
-    iframe.addEventListener('click', function () {
-      iframe.contentWindow.focus(); // Focus when the iframe is clicked
-    });
-  });
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + '=') {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function handleButtonClick(buttonId) {
+    const csrftoken = getCookie('csrftoken'); // Fetch the CSRF token from cookies
+    fetch('/button-action/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken, // Include the CSRF token in the request headers
+      },
+      body: JSON.stringify({ button_id: buttonId }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          const rightDiv = document.querySelector('.flex-container .right');
+          if (rightDiv.style.display === 'none') {
+            rightDiv.style.display = 'block'; // Show the noVNC window
+          } else {
+            rightDiv.style.display = 'none'; // Hide the noVNC window
+          }
+        } else {
+          alert('Error: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
 </script>
+
+
 
 
 
@@ -107,8 +143,7 @@
   <!-- Right: noVNC Window -->
   <div class="right">
     <iframe 
-      src="http://192.168.41.129:6080/vnc.html?&autoconnect=true" 
-       allow="keyboard"
+      src="http://192.168.41.129:6080/vnc.html?&autoconnect=true"
       title="noVNC Window">
     </iframe>
   </div>
