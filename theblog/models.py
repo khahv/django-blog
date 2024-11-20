@@ -24,7 +24,7 @@ class Post(models.Model):
   title = models.CharField(max_length=255)
   author = models.ForeignKey(User, on_delete=models.CASCADE)
   # body  = models.TextField()
-  body = FroalaField(blank=True, null=True)
+  body = FroalaField()
   # body = RichTextField(blank=True, null=True)
   post_date = models.DateField(auto_now_add=True)
   # category = models.CharField(max_length=255, default='coding')

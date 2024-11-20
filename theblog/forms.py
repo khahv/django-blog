@@ -11,7 +11,7 @@ from django_select2.forms import Select2MultipleWidget
 
 #Define CSS style for Post form (add_post.html) here
 class PostForm(forms.ModelForm):
-  body = forms.CharField(widget=FroalaEditor)  
+  # body = forms.CharField(widget=FroalaEditor)  
 
   class Meta:
     model = Post
@@ -21,5 +21,14 @@ class PostForm(forms.ModelForm):
       'author':forms.Select(attrs={'class':'form-control'}),
       'category':forms.Select(attrs={'class':'form-control'}),
       'machines':Select2MultipleWidget,
-      'body':forms.Textarea(attrs={'class':'form-control'}),
+      'body': FroalaEditor(options={
+                'toolbarButtons': [
+                    'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript',
+                  '|', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor',
+                  '|', 'align', 'formatOL', 'formatUL', 'outdent', 'indent',
+                  '|', 'insertLink', 'insertImage', 'insertVideo', 'insertTable',
+                  '|', 'emoticons', 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting',
+                  '|', 'html', 'fullscreen', 'undo', 'redo', 'addStartMachine', 'addQuestion'
+                ],
+            }),
     }

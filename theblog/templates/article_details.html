@@ -17,9 +17,10 @@
       }
     }
     return cookieValue;
-  }
+  };
 
-  function handleButtonClick(buttonId) {
+  <!--User click this button to trigger a virtual machine -->
+  function handleMachineButtonClick(buttonId, machineTemplateId) {
     const csrftoken = getCookie('csrftoken'); // Fetch the CSRF token from cookies
     fetch('/button-action/', {
       method: 'POST',
@@ -27,7 +28,7 @@
         'Content-Type': 'application/json',
         'X-CSRFToken': csrftoken, // Include the CSRF token in the request headers
       },
-      body: JSON.stringify({ button_id: buttonId }),
+      body: JSON.stringify({ button_id: buttonId, button_data: machineTemplateId }),
     })
       .then(response => response.json())
       .then(data => {
@@ -39,6 +40,31 @@
           } else {
             rightDiv.style.display = 'none'; // Hide the noVNC window
           }
+        } else {
+          alert('Error: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
+  <!-- User click this button to answer a question  -->
+  function handleAnswerButtonClick(buttonId, answer) {
+    const csrftoken = getCookie('csrftoken'); // Fetch the CSRF token from cookies
+    fetch('/button-action/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken, // Include the CSRF token in the request headers
+      },
+      body: JSON.stringify({ button_id: buttonId, button_data: answer }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          
         } else {
           alert('Error: ' + data.message);
         }

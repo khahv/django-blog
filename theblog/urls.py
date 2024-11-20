@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 # from . import views
 from .views import HomeView, ArticleDetailView, AddPostView, UpdatePostView, DeletePostView, AddCategoryView,AddMachineTemplateView, button_action
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('article/edit/<int:pk>', UpdatePostView.as_view(), name="update_post"),
     path('article/<int:pk>/remove', DeletePostView.as_view(), name="delete_post"),
     path('button-action/', button_action, name='button_action'),
+    path('froala_editor/', include('froala_editor.urls')),
 ]

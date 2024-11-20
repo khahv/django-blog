@@ -56,18 +56,24 @@ def button_action(request):
       # Parse the JSON payload
       data = json.loads(request.body)
       button_id = data.get('button_id')
+      button_data = data.get('button_data')
       # Check if the button_id matches the special value
-      if button_id == 'special-button-id':
-          # Perform the backend action
-          # Example: Update a database entry or send a notification
-          logger.debug("This is a debug message")
-          logger.info("This is an info message")
-          logger.warning("This is a warning message")
-          logger.error("This is an error message")
-          logger.critical("This is a critical message")
-          return JsonResponse({'success': True, 'message': 'AAASpecial action performed!'})
+      if button_id == 'machine-template-id':
+        # Perform the backend action
+        # Example: Update a database entry or send a notification
+        logger.debug("Backend should trigger starting machine with template id: " + str(button_data))
+        logger.info("Backend should trigger starting machine with template id: " + str(button_data))
+        
+        return JsonResponse({'success': True, 'message': 'Special action performed!'})
+      elif button_id == 'answer-id':
+        #Logic to check the content of answer here:
+        #if button_data == 'this is the correct answer':
+
+        logger.debug("Backend should check the answer : " + str(button_data))
+        logger.info("Backend should check the answer : " + str(button_data))
+        return JsonResponse({'success': True, 'message': 'Special action performed!'})
       else:
-          return JsonResponse({'success': False, 'message': 'Invalid button ID'})
+        return JsonResponse({'success': False, 'message': 'Invalid button ID'})
     except Exception as e:
-        return JsonResponse({'success': False, 'message': str(e)})
+      return JsonResponse({'success': False, 'message': str(e)})
   return JsonResponse({'success': False, 'message': 'Invalid request method'})
