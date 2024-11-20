@@ -6861,3 +6861,10 @@ INFO 2024-11-20 20:48:20,662 autoreload Watching for file changes with StatReloa
 INFO 2024-11-20 20:48:22,569 autoreload C:\Simpleblog\django-blog\django-blog\theblog\forms.py changed, reloading.
 INFO 2024-11-20 20:48:23,669 autoreload Watching for file changes with StatReloader
 INFO 2024-11-20 20:48:24,078 basehttp "GET /article/edit/3 HTTP/1.1" 200 12007
+INFO 2024-11-20 20:49:14,019 basehttp "GET /article/edit/3 HTTP/1.1" 200 12007
+INFO 2024-11-20 20:49:20,209 basehttp "GET /article/edit/3 HTTP/1.1" 200 9099
+INFO 2024-11-20 20:49:22,133 basehttp "GET /article/edit/3 HTTP/1.1" 200 9099
+INFO 2024-11-20 20:49:28,103 basehttp "GET /article/edit/3 HTTP/1.1" 200 11896
+INFO 2024-11-20 20:49:45,075 basehttp "GET /article/edit/3 HTTP/1.1" 200 11738
+INFO 2024-11-20 20:49:46,121 basehttp "GET /article/edit/3 HTTP/1.1" 200 11738
+INFO 2024-11-20 20:49:49,976 basehttp "GET /article/edit/3 HTTP/1.1" 200 11896
